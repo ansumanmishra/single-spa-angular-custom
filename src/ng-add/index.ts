@@ -5,7 +5,7 @@ import {
   Tree,
 } from '@angular-devkit/schematics';
 
-export function singleSpaAngularAm(options: any): Rule {
+export function singleSpaAngularCustom(options: any): Rule {
   return (tree: Tree, _context: SchematicContext) => {
     const workspaceConfigBuffer = tree.read('angular.json');
     if (!workspaceConfigBuffer) {

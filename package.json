@@ -1,16 +1,20 @@
 {
-  "name": "single-spa-angular-am",
-  "version": "0.0.0",
-  "description": "A blank schematics",
+  "name": "single-spa-angular-custom",
+  "version": "0.0.1",
+  "description": "This is a custom schematics built on top of single-spa-angular schematics which fixes running the application in standalone mode",
   "scripts": {
     "build": "tsc -p tsconfig.json",
     "build:watch": "tsc -p tsconfig.json --watch",
     "test": "npm run build && jasmine src/**/*_spec.js"
   },
   "keywords": [
-    "schematics"
+    "schematics",
+    "single spa",
+    "single spa angular",
+    "angular"
   ],
-  "author": "",
+  "author": "Ansuman Mishra <sunmoonfortune@gmail.com>",
+  "homepage": "https://github.com/ansumanmishra/single-spa-angular-custom",
   "license": "MIT",
   "schematics": "./src/collection.json",
   "dependencies": {

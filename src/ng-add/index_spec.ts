@@ -4,10 +4,14 @@ import * as path from 'path';
 
 const collectionPath = path.join(__dirname, '../collection.json');
 
-describe('single-spa-angular-am', () => {
+describe('single-spa-angular-custom', () => {
   it('works', async () => {
     const runner = new SchematicTestRunner('schematics', collectionPath);
-    const tree = await runner.runSchematic('single-spa-angular-am', {}, Tree.empty());
+    const tree = await runner.runSchematic(
+      'single-spa-angular-custom',
+      {},
+      Tree.empty()
+    );
 
     expect(tree.files).toEqual([]);
   });

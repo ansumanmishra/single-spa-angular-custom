@@ -26,3 +26,17 @@ npm publish
 ```
 
 That's it!
+
+To test in other projects locally
+
+```bash
+schematics ../single-spa-angular-custom/src/collection.json:single-spa-angular-custom --debug=false
+```
+
+For ng-add
+
+```bash
+schematics ../single-spa-angular-custom/src/collection.json:ng-add  --debug=false
+```
+
+--dry-run=false will also work
