@@ -1,0 +1,9 @@
+{
+  "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
+  "schematics": {
+    "single-spa-angular-am": {
+      "description": "A blank schematic.",
+      "factory": "./single-spa-angular-am/index#singleSpaAngularAm"
+    }
+  }
+}
