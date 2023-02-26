@@ -52,6 +52,14 @@ function _createLocalServeProfile(
     }
 
     const serveLocalConfig = JSON.parse(JSON.stringify(serveConfig));
+    const existingBuilder = serveLocalConfig.builder;
+
+    if (existingBuilder !== '@angular-builders/custom-webpack:dev-server') {
+      throw new Error(
+        `Could not find single spa configured in this project. Run 'ng add single-spa-angular' before running this schematics`
+      );
+    }
+
     serveLocalConfig.builder = '@angular-devkit/build-angular:dev-server';
     serveLocalConfig.configurations.production.browserTarget = `${projectName}:build-local:production`;
     serveLocalConfig.configurations.development.browserTarget = `${projectName}:build-local:development`;
@@ -79,6 +87,15 @@ function _createLocalBuildProfile(
     }
 
     const buildLocalConfig = JSON.parse(JSON.stringify(buildConfig));
+    const existingBuilder = buildLocalConfig.builder;
+
+    if (existingBuilder !== '@angular-builders/custom-webpack:browser') {
+      console.log('hiieee');
+      throw new Error(
+        `Could not find single spa configured in this project. Run 'ng add single-spa-angular' before running this schematics`
+      );
+    }
+
     buildLocalConfig.builder = '@angular-devkit/build-angular:browser';
 
     buildLocalConfig.options.tsConfig = 'tsconfig.local.json';
