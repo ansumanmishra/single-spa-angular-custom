@@ -1,7 +1,6 @@
 import { join, normalize } from '@angular-devkit/core';
 import {
   chain,
-  externalSchematic,
   Rule,
   SchematicContext,
   Tree,
@@ -30,11 +29,9 @@ export function singleSpaAngularCustom(options: SchemaOptions): Rule {
     }
 
     return chain([
-      _createLocalBuildProfile(project, options, workspaceConfig),
       _createLocalServeProfile(project, options, workspaceConfig, projectName),
-      _createMainTSFile(project),
+      _createLocalBuildProfile(project, options, workspaceConfig),
       _createTSConfigFile(project),
-      _runSingleSpaAngularSchematic(options),
       _addPackageJsonScripts(projectName),
     ]);
   };
@@ -55,8 +52,9 @@ function _createLocalServeProfile(
     }
 
     const serveLocalConfig = JSON.parse(JSON.stringify(serveConfig));
-    serveLocalConfig.configurations.production.browserTarget = `${projectName}:production`;
-    serveLocalConfig.configurations.development.browserTarget = `${projectName}:development`;
+    serveLocalConfig.builder = '@angular-devkit/build-angular:dev-server';
+    serveLocalConfig.configurations.production.browserTarget = `${projectName}:build-local:production`;
+    serveLocalConfig.configurations.development.browserTarget = `${projectName}:build-local:development`;
 
     const newTargetName = 'serve-local';
     project.architect[newTargetName] = serveLocalConfig;
@@ -81,7 +79,12 @@ function _createLocalBuildProfile(
     }
 
     const buildLocalConfig = JSON.parse(JSON.stringify(buildConfig));
+    buildLocalConfig.builder = '@angular-devkit/build-angular:browser';
+
     buildLocalConfig.options.tsConfig = 'tsconfig.local.json';
+    buildLocalConfig.options.main = 'src/main.ts';
+    delete buildLocalConfig.options.customWebpackConfig;
+    delete buildLocalConfig.options.deployUrl;
 
     const newTargetName = 'build-local';
     project.architect[newTargetName] = buildLocalConfig;
@@ -92,28 +95,11 @@ function _createLocalBuildProfile(
   };
 }
 
-function _createMainTSFile(project: any): Rule {
-  return (host: Tree) => {
-    const appRoot = join(normalize(project.root), 'src');
-    const mainFilePath = join(appRoot, 'main.ts');
-    const localMainFilePath = join(appRoot, 'main.local.ts');
-    const mainFileBuffer = host.read(mainFilePath);
-
-    if (!mainFileBuffer) {
-      throw new Error(`Could not find ${mainFilePath}`);
-    }
-
-    const localMainFileContent = mainFileBuffer.toString();
-
-    host.create(localMainFilePath, localMainFileContent);
-  };
-}
-
 function _createTSConfigFile(project: any): Rule {
   return (host: Tree) => {
     const appRoot = join(normalize(project.root), '');
     const tsconfigFilePath = join(appRoot, 'tsconfig.app.json');
-    const tsconfigLocalFilePath = join(appRoot, 'tsconfig.app.local.json');
+    const tsconfigLocalFilePath = join(appRoot, 'tsconfig.local.json');
     const tsconfigFileBuffer = host.read(tsconfigFilePath);
 
     if (!tsconfigFileBuffer) {
@@ -123,12 +109,16 @@ function _createTSConfigFile(project: any): Rule {
     const tsconfigLocalFileContent = tsconfigFileBuffer.toString();
 
     host.create(tsconfigLocalFilePath, tsconfigLocalFileContent);
-  };
-}
 
-function _runSingleSpaAngularSchematic(options: SchemaOptions): Rule {
-  return async (_: Tree) => {
-    return externalSchematic('single-spa-angular', 'ng-add', options);
+    // Update tsconfig.app.local.json
+    const tsconfigAppLocalContent = JSON.parse(
+      host.read(tsconfigLocalFilePath)!.toString()
+    );
+    tsconfigAppLocalContent.files = ['src/main.ts', 'src/polyfills.ts'];
+    host.overwrite(
+      tsconfigLocalFilePath,
+      JSON.stringify(tsconfigAppLocalContent, null, 2)
+    );
   };
 }
 
@@ -146,7 +136,7 @@ function _addPackageJsonScripts(projectName: string): Rule {
       packageJson.scripts = {};
     }
 
-    packageJson.scripts.start = `ng run ${projectName}:serve-local --port 4300`;
+    packageJson.scripts.start = `ng run ${projectName}:serve-local --port 4200`;
     packageJson.scripts.build = `ng run ${projectName}:build-local`;
 
     const updatedPackageJson = JSON.stringify(packageJson, null, 2);
