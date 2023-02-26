@@ -2,7 +2,7 @@
   "$schema": "../node_modules/@angular-devkit/schematics/collection-schema.json",
   "schematics": {
     "ng-add": {
-      "description": "A blank schematic.",
+      "description": "Adds single spa angular and fixes standalone builds",
       "factory": "./ng-add/index#singleSpaAngularCustom"
     }
   }
