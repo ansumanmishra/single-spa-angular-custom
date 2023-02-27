@@ -17,7 +17,6 @@ export function _createLocalBuildProfile(
     const existingBuilder = buildLocalConfig.builder;
 
     if (existingBuilder !== '@angular-builders/custom-webpack:browser') {
-      console.log('hiieee');
       throw new Error(
         `Could not find single spa configured in this project. Run 'ng add single-spa-angular' before running this schematics`
       );
