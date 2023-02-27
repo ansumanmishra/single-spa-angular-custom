@@ -19,8 +19,8 @@ ng add single-spa-angular-custom
 It adds the following scrips to `package.json`
 
 ```bash
-"start": "ng run single-spa-angular-am-testing:serve-local --port 4300", // You will be prompted to enter the port while running the schematics
-"build": "ng run single-spa-angular-am-testing:build-local",
+"start": "ng run <project name>:serve-local --port 4300", // You will be prompted to enter the port while running the schematics
+"build": "ng run <project name>:build-local",
 ```
 
 Now you should be able to run your application locally without Single spa container
