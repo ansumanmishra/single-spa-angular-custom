@@ -4,7 +4,7 @@ After adding single spa angular (ng add single-spa-angular) schematics in any an
 
 ### Installing
 
-First run the `single-spa-angular` schematics
+First run the `single-spa-angular` schematics (Skip this step if single spa angular schematic is already configured)
 
 ```bash
 ng add single-spa-angular
