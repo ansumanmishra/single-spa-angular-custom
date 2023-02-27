@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/schema",
+  "$id": "single-spa-ng-add-standalone",
+  "title": "ingle-spa-ng-add-standalone schematic",
+  "type": "object",
+  "properties": {
+    "project": {
+      "type": "string",
+      "description": "Name of the project to update",
+      "$default": {
+        "$source": "projectName"
+      }
+    },
+    "port": {
+      "type": "string",
+      "description": "Port to listen on locally",
+      "default": "4300",
+      "x-prompt": "What port should your project run on locally?"
+    }
+  },
+  "required": []
+}

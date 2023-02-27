@@ -3,6 +3,7 @@
   "schematics": {
     "ng-add": {
       "description": "Adds single spa angular and fixes standalone builds",
+      "schema": "./ng-add/schema.json",
       "factory": "./ng-add/index#singleSpaAngularCustom"
     }
   }
