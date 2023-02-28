@@ -26,6 +26,9 @@ export function _createLocalBuildProfile(
 
     buildLocalConfig.options.tsConfig = 'tsconfig.local.json';
     buildLocalConfig.options.main = 'src/main.ts';
+    buildLocalConfig.configurations.production.outputHashing = 'all';
+
+    delete buildLocalConfig.configurations.development.outputHashing;
     delete buildLocalConfig.options.customWebpackConfig;
     delete buildLocalConfig.options.deployUrl;
 
