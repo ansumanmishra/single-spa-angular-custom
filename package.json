@@ -1,6 +1,6 @@
 {
   "name": "single-spa-angular-custom",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "This is a custom schematics built on top of single-spa-angular schematics which fixes running the application in standalone mode",
   "scripts": {
     "build": "tsc -p tsconfig.json",
